@@ -1,0 +1,13 @@
+version: "3"
+services:
+  rstudio:
+    image: rockerjp/tidyverse:latest
+    ports:
+      - "8787:8787"
+    environment:
+      - USERNAME=rstudio
+      - PASSWORD=rstudio
+      - DISABLE_AUTH=true
+    volumes:
+      - ./work:/home/rstudio/project
+      #- ./homeR:/home/rstudio
