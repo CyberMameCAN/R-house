@@ -12,7 +12,7 @@
 
 install.packages("tidyverse")
 library(tidyverse)
-data()  # いろいろなデータ名が見れる
+data()  # いろいろなデータの種類が見れる
 view(starwars)
 
 # Variable type
