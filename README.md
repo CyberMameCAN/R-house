@@ -6,6 +6,7 @@
 
 - [Rによる統計入門](https://htsuda.net/stats/)
 - [R programming for beginners – statistic with R (t-test and linear regression) and dplyr and ggplot](https://www.youtube.com/watch?v=ANMuuq502rE)
+- [高校生のためのRによる回帰分析](http://www.f.waseda.jp/takezawa/math/joho/regression.pdf)
 
 ## 使い方
 
