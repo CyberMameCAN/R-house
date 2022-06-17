@@ -1,4 +1,4 @@
-install.packages("datarium")
+#install.packages("datarium")
 library(datarium)
 mkt = as.data.frame(marketing)
 head(mkt, 3)

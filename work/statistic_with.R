@@ -45,3 +45,4 @@ gapminder %>%
 
 #summary(lm(lifeExp ~ gdpPercap))
 summary(lm(lifeExp ~ gdpPercap+pop))
+

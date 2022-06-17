@@ -1,4 +1,4 @@
-install.packages("ineq")
+#install.packages("ineq")
 library(ineq)
 
 income <- c(0, 0, 0, 600)

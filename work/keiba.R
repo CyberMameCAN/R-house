@@ -6,4 +6,5 @@ row.names(st) <- states[, 2]
 d <- dist(st)
 
 summary(states)
+str(states)
 mean(states$weight_ratio)
