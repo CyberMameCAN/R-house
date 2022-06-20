@@ -24,7 +24,7 @@ summary(fit2)
 plot(x=mkt$youtube, mkt$sales, xlab="Youtube [unit: 1000 dollars]", ylab = "Sales")
 lines(sort(mkt$youtube), fitted(fit2)[order(mkt$youtube)], col="#2792b3", lwd=3)
 
-install.packages("car")
+#install.packages("car")
 library(car)
 
 scatterplotMatrix(mkt, spread = F, smooth = F, regLine = list(col = "#2792b3", lwd = 3), col = "black", cex = .5)
@@ -35,7 +35,7 @@ cor(mkt)
 fit = lm(sales ~ youtube + facebook + youtube:facebook, data=mkt)  # 交互作用
 summary(fit)
 
-install.packages("effects")
+#install.packages("effects")
 library(effects)
 
 plot(effect("youtube:facebook", fit, , list(facebook = c(0, 30, 60))), multiline = T)
@@ -80,7 +80,7 @@ par(mar=c(4.5, 4.5, 2, 1))
 spreadLevelPlot(fit)
 
 # 診断
-install.packages("gvlma")
+#install.packages("gvlma")
 library(gvlma)
 
 summary(gvlma(fit))
@@ -163,7 +163,7 @@ library(MASS)
 fit = lm(sales ~ youtube + facebook + newspaper, data = mkt[-c(6, 131),])
 stepAIC(fit, direction = "backward")
 
-install.packages("leaps")
+#install.packages("leaps")
 library(leaps)
 leaps = regsubsets(sales ~ youtube + facebook + newspaper, data = mkt[-c(6, 131),], nbest = 3)
 plot(leaps, scale = "adjr2")
