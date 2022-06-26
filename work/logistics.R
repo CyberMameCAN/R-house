@@ -3,7 +3,7 @@
 
 library(MASS)
 head(birthwt)
-View(birthwt)
+#View(birthwt)
 
 # low    新生児の体重が2.5kg未満か否か(2.5kg未満が1)
 # age    母親の年齢

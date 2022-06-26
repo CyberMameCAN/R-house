@@ -16,6 +16,7 @@ summary(fit)
 # 以下、自分で計算してみる
 x_mean = mean(x)
 residuals(fit)  # 残差
+coef(fit)  # 決定係数
 s = sum((x - x_mean)^2)  # 偏差平方和
 dev = deviance(fit) # 残差平方和
 s2 = dev / (length(x) - 1 - 1)  # 残差の自由度　データ数 - 1 - 説明変数の数
