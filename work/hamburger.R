@@ -155,3 +155,78 @@ bottom_limit = (mean_waku_jk - mean_mogu_jk) - t * S2
 #     しかし、0が範囲に含まれていることから、評価が同等となる可能性もあるため、帰無仮設は棄却できない
 
 ## t検定
+waku_jk
+mean_waku_jk
+ro2_waku_jk
+temp_ro2_jk
+S2
+
+# 計算結果より
+t_val = (mean_waku_jk - mean_mogu_jk) / S2
+t_val  #-> -1.288
+# 自由度14、信頼区間95%の範囲は -2.145 〜 2.145
+# よって帰無仮設は棄却できない -> 「優位な差はない」を否定できない
+
+# (ポテト編)
+waku_jk = c(80, 75, 80, 95, 90, 80, 85, 90)
+mogu_jk = c(75, 65, 80, 85, 75, 80, 80, 70)
+
+mean_waku_jk = mean(waku_jk)
+mean_mogu_jk = mean(mogu_jk)
+
+ro2_waku_jk = sum((waku_jk - mean_waku_jk)^2)/length(waku_jk)  # 標本分散を求めたかった
+ro2_mogu_jk = sum((mogu_jk - mean_mogu_jk)^2)/length(mogu_jk)  # 標本分散を求めたかった
+
+sum2_waku_jk = ro2_waku_jk * length(waku_jk)  # 平均からの偏差の平方和
+sum2_mogu_jk = ro2_mogu_jk * length(mogu_jk)
+
+temp_ro2_jk = (sum2_waku_jk + sum2_mogu_jk) / ((length(waku_jk)-1) + (length(mogu_jk)-1))  # 推定母分散
+S2 = sqrt( temp_ro2_jk * (1/length(waku_jk) + 1/length(mogu_jk)) )  # 差の標本標準誤差
+
+# t値
+t_val = (mean_waku_jk - mean_mogu_jk) / S2
+t_val  #->2.463
+# 自由度14、信頼区間95%の範囲は -2.145 〜 2.145
+# よって、帰無仮設は棄却 -> 「優位な差はない」を否定できる
+
+## t検定
+# (同時に2つを評価)
+waku_jk = c(90, 75, 75, 75, 80, 65, 75, 80)
+mogu_jk = c(95, 80, 80, 80, 75, 75, 80, 85)
+	
+mean_waku_jk = mean(waku_jk)
+mean_mogu_jk = mean(mogu_jk)
+
+ro2_waku_jk = sum((waku_jk - mean_waku_jk)^2) / length(waku_jk)  # 標本分散
+ro2_mogu_jk = sum((mogu_jk - mean_mogu_jk)^2) / lenght(mogu_jk)  # 標本分散
+
+diff_jk = waku_jk - mogu_jk
+mean_diff_jk = mean(diff_jk)
+ro2_diff_jk = sum( (diff_jk - mean_diff_jk)^2 ) / length(diff_jk)
+
+t_val = mean_diff_jk / sqrt(ro2_diff_jk/(length(diff_jk) - 1))
+t_val  # -2.966
+# 自由度7、信頼区間95%の範囲は、-2.365 〜 2.365
+# よって、帰無仮設は棄却 -> 「優位な差がない」を否定できる
+
+# 5.4　実践編：新作バーガー！
+before = c(65, 70, 85, 70, 80, 80, 80, 70, 80, 70)
+after  = c(80, 90, 80, 90, 90, 85, 80, 90, 85, 80)
+
+mean_before = mean(before)
+mean_after  = mean(after)
+
+ro2_before = sum((before - mean_before)^2) / length(before)
+ro2_after  = sum((after  - mean_after )^2) / length(after)
+
+diff = before - after
+diff
+mean_diff = mean(diff)
+ro2_diff = sum((diff - mean_diff)^2) / length(diff)
+
+t_val = mean_diff / sqrt(ro2_diff/(length(diff) - 1))
+t_val  #-> 3.586
+# 自由度7、信頼区間95%の範囲は、-2.365 〜 2.365
+# よって帰無仮設は棄却 -> 「優位な差がない」を否定できる
+
+## 6. 分散分析（１要因）
