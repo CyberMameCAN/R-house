@@ -230,3 +230,63 @@ t_val  #-> 3.586
 # よって帰無仮設は棄却 -> 「優位な差がない」を否定できる
 
 ## 6. 分散分析（１要因）
+# グループ数が３つ以上になったバイの分析手法
+
+wakuwaku = c(80, 75, 80, 90, 95, 80, 80, 85, 85, 80, 90, 80, 75, 90, 85, 85, 90, 90, 85, 80)
+mogumogu = c(75, 70, 80, 85, 90, 75, 85, 80, 80, 75, 80, 75, 70, 85, 80, 75, 80, 80, 90, 80)
+pakupaku = c(80, 80, 80, 90, 95, 85, 95, 90, 85, 90, 95, 85, 98, 95, 85, 85, 90, 90, 85, 85)
+
+mean_waku = mean(wakuwaku)
+mean_mogu = mean(mogumogu)
+mean_paku = mean(pakupaku)
+# 平方和(群内)
+se_waku = sum((wakuwaku - mean_waku)^2)
+se_mogu = sum((mogumogu - mean_mogu)^2)
+se_paku = sum((pakupaku - mean_paku)^2)
+# 分散(群内)
+ro2_waku = se_waku / length(wakuwaku)
+ro2_mogu = se_mogu / length(mogumogu)
+ro2_paku = se_paku / length(pakupaku)
+
+ro_waku = sqrt(ro2_waku)
+ro_mogu = sqrt(ro2_mogu)
+ro_paku = sqrt(ro2_paku)
+
+# 帰無仮説は「3つのお店のポテトの評価（母集団）の平均に差はない」
+
+wa_mo_pa = c(wakuwaku, mogumogu, pakupaku)
+mean_wa_mo_pa = mean(wa_mo_pa)
+# 平方和(群間、水準間)
+se_wa_mo_gu = sum((wa_mo_pa - mean_wa_mo_pa)^2)
+# 分散(群間、水準間)
+ro2_wa_mo_pa = se_wa_mo_gu / length(wa_mo_pa)
+
+ro_wa_mo_pa = sqrt(ro2_wa_mo_pa)
+
+# 全体(残差)の平方和
+ro2_all = ro2_wa_mo_pa * length(wa_mo_pa)
+
+wa = sum(mean_waku - mean_wa_mo_pa)^2 * length(wakuwaku)
+mo = sum(mean_mogu - mean_wa_mo_pa)^2 * length(mogumogu)
+pa = sum(mean_paku - mean_wa_mo_pa)^2 * length(pakupaku)
+
+se_waku + se_mogu + se_paku + wa + mo + pa #-> 2494.183  分散(群間)に等しい
+
+# 分散分析表を作る
+# 群間(水準間)
+n_e = 3  # ワクワク・モグモグ・パクパク
+U2_e = (wa + mo + pa) / (n_e - 1)
+# 群内(残差)
+n_g = (length(wakuwaku) - 1) + (length(mogumogu) - 1) + (length(pakupaku) - 1)
+U2_g = (se_waku + se_mogu + se_paku) / n_g
+
+f_value = U2_e / U2_g  #-> 12.22 
+# F分布表より自由度57, 自由度2はダイタイ3.150
+# 12.22とを比べると、棄却域に入っている -> 少なくとも１つの組み合わせ間に差がある
+
+# aovで分散分析表
+potate_data = data.frame(A=factor(c(rep("wakuwaku", 20),rep("mogumogu", 20),rep("pakupaku", 20))), X=c(wakuwaku, mogumogu, pakupaku))
+boxplot(X~A,data=potate_data, col="lightblue")
+
+# 分散分析表が出力される
+summary(aov(X~A, data=potate_data))
