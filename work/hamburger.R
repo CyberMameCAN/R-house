@@ -285,8 +285,88 @@ f_value = U2_e / U2_g  #-> 12.22
 # 12.22とを比べると、棄却域に入っている -> 少なくとも１つの組み合わせ間に差がある
 
 # aovで分散分析表
-potate_data = data.frame(A=factor(c(rep("wakuwaku", 20),rep("mogumogu", 20),rep("pakupaku", 20))), X=c(wakuwaku, mogumogu, pakupaku))
+potate_data = data.frame(A=factor(c(rep("wakuwaku", 20),rep("mogumogu", 20), rep("pakupaku", 20))), X=c(wakuwaku, mogumogu, pakupaku))
 boxplot(X~A,data=potate_data, col="lightblue")
 
 # 分散分析表が出力される
 summary(aov(X~A, data=potate_data))
+
+## 7. 分散分析（２要因）
+
+crispy_spycy    = c(65, 85, 75, 85, 75, 80, 90, 75, 85, 65, 75, 85, 80, 85, 90)
+crispy_regular  = c(65, 70, 80, 75, 70, 60, 65, 70, 85, 60, 65, 75, 70, 80, 75)
+regular_spycy   = c(70, 65, 85, 80, 75, 65, 75, 60, 85, 65, 75, 70, 65, 80, 75)
+regular_regular = c(70, 70, 85, 80, 65, 75, 65, 85, 80, 60, 70, 75, 70, 80, 85)
+
+# 平均
+mean_crispy_spycy    = mean(crispy_spycy)
+mean_crispy_regular  = mean(crispy_regular)
+mean_regular_spycy   = mean(regular_spycy)
+mean_regular_regular = mean(regular_regular)
+# 平方和(群内)
+se_crispy_spycy    = sum((crispy_spycy - mean_crispy_spycy)^2)
+se_crispy_regular  = sum((crispy_regular - mean_crispy_regular)^2)
+se_regular_spycy   = sum((regular_spycy - mean_regular_spycy)^2)
+se_regular_regular = sum((regular_regular - mean_regular_regular)^2)
+# 分散
+ro2_crispy_spycy    = se_crispy_spycy / length(crispy_spycy)
+ro2_crispy_regular  = se_crispy_regular / length(crispy_regular)
+ro2_regular_spycy   = se_regular_spycy / length(regular_spycy)
+ro2_regular_regular = se_regular_regular / length(regular_regular)
+# 標準偏差
+ro_crispy_spycy    = sqrt(ro2_crispy_spycy)
+ro_crispy_regular  = sqrt(ro2_crispy_regular)
+ro_regular_spycy   = sqrt(ro2_regular_spycy)
+ro_regular_regular = sqrt(ro2_regular_regular)
+
+# クリスピーでの集計
+crispy = c(crispy_spycy, crispy_regular) 
+mean_crispy = mean(crispy)
+se_crispy   = sum((crispy - mean_crispy)^2)
+ro2_crispy  = se_crispy / length(crispy) 
+ro_crispy   = sqrt(ro2_crispy)
+# 普通味の衣
+regular      = c(regular_spycy, regular_regular)
+mean_regular = mean(regular)
+se_regular   = sum((regular - mean_regular)^2)
+ro2_regular  = se_regular / length(regular) 
+ro_regular   = sqrt(ro2_regular)
+
+# 辛口味での集計
+spycy = c(crispy_spycy, regular_spycy)
+mean_spycy = mean(spycy)
+se_spycy   = sum((spycy - mean_spycy)^2)
+ro2_spycy  = se_spycy / length(spycy)
+ro_spycy   = sqrt(ro2_spycy)
+# 普通味での集計
+nonspycy      = c(crispy_regular, regular_regular)
+mean_nonspycy = mean(nonspycy)
+se_nonspycy   = sum((nonspycy - mean_nonspycy)^2)
+ro2_nonspycy  = se_nonspycy / length(nonspycy)
+ro_nonspycy   = sqrt(ro2_nonspycy)
+
+# 味勝負　全体での計算
+mean_taste_total = (mean_crispy + mean_regular + mean_spycy + mean_nonspycy) / 4
+se_taste_total   = (se_crispy + se_regular + se_spycy + se_nonspycy) / 4
+ro2_taste_total  = (ro2_crispy + ro2_regular + ro2_spycy + ro2_nonspycy) / 4
+ro_taste_total   = (ro_crispy + ro_regular + ro_spycy + ro_nonspycy) / 4
+
+# 要因1によるズレ
+factor1 = (mean_crispy - mean_taste_total)^2 * length(crispy) + 
+  (mean_regular - mean_taste_total)^2 * length(crispy)
+# 要因2によるズレ
+factor2 = (mean_spycy - mean_taste_total)^2 * length(spycy) + 
+  (mean_nonspycy - mean_taste_total)^2 * length(spycy)
+# 交互作用によるズレ
+
+# (未完//)
+
+# aovで分散分析表
+bunsan2 = data.frame(A=factor(c(rep("wakuwaku",20), rep("mogumogu",20), rep("pakupaku",20))), No=factor(rep(1:20, 3)),y=c(wakuwaku, mogumogu, pakupaku))
+bunsan2
+
+summary(aov(y~ A+No, bunsan2))
+# 「A」の行が水準・群に関する分散分析の統計検定量
+# Pr(.F)の値がは順分小さい -> よって因子Aの水準・群の平均値は有意水準0.05で差があると言える
+# 「No」の行が各お店間に関する分散分析の統計検定量
+# Aほどではないが0.0031となり、有意水準0.05で差があると言える
