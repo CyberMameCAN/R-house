@@ -25,7 +25,7 @@ queueing = function(ta, ts, win=1) {
 }
 
 ta = 10     # 平均到着時間
-ts = 8      # 平均サービス時間
+ts = 12      # 平均サービス時間
 win = 1     # M/M/*
 kekka = queueing(ta, ts, win)
 sprintf("M/M/%dモデル 待ち %.2f (人), %.3f (分), ターンアラウンドタイム %.1f (分)",
