@@ -3,7 +3,7 @@
 σ = 5
 n = 300
 
-X = rnorm(n, μ, σ)
+X = rnorm(n, μ, σ)  # 正規分布に従うn個の数値を返す
 Z = (X - mean(X))/ sqrt(var(X))
 mean(Z)
 var(Z)
@@ -31,9 +31,13 @@ sd1 = sqrt(50*0.3*0.7)
 curve(dnorm(x, mean=0.3*50, sd=sd1), add=T)  # 標本サイズが大きい場合（50個）、正規分布に非常に近い
 
 # Ex) 1000人に対して行った調査で、ある政権の支持率が45%だとする。有意水準5%(α=0.05)の場合の母比率の信頼区間の計算
-z = abs(qnorm(0.025))
+z = abs(qnorm(0.05/2))
 under = 0.45 - z * sqrt(0.45*(1-0.45)/1000)
 upper = 0.45 + z * sqrt(0.45*(1-0.45)/1000)
-under = round(under,4)
-upper = round(upper,4)
+under = round(under, 4)
+upper = round(upper, 4)
 sprintf("母集団の支持率はおおよそ %.4f 〜 %.4f の間と推測", under, upper)
+
+# 以下テスト
+integrate(dnorm,-Inf,Inf) # 積分
+

@@ -41,9 +41,9 @@ h
 id = c(0:9)
 samp = c(47,51,49,50,49,46,51,48,52,49)
 u = mean(samp)
-U2 = var(samp)  # Rの分散は「不変分散」。標本分散を求めたい時は手動で計算。
+U2 = var(samp)  # Rの分散は「不偏分散」。標本分散を求めたい時は手動で計算。
 sd(samp)
-# 不変分散 n-1で割った分散のあれ
+# 不偏分散 n-1で割った分散のあれ
 
 n = 10 - 1  # 自由度
 
@@ -53,7 +53,8 @@ length(samp)
 ### 信頼区間
 
 # t値=2.262 (自由度9, 95%信頼区間の時)
-t_val = 2.262
+#t_val = 2.262
+t_val = abs(qt(0.05/2, n))
 # 母平均 +- 2.262 * 標本標準誤差
 upper_limit = u + t_val * sqrt(U2/length(samp))
 bottom_limit = u - t_val * sqrt(U2/length(samp))
@@ -68,8 +69,10 @@ id = c(1:chicken_len)
 u = mean(chicken)
 U2 = var(chicken)
 n = chicken_len - 1
-t_val95 = 2.365
-t_val99 = 3.499
+#t_val95 = 2.365
+t_val95 = abs(qt(0.05/2, n))
+#t_val99 = 3.499
+t_val99 = abs(qt(0.01/2, n))
 sqrt(U2/(n+1))
 
 upper_limit = u + t_val95 * sqrt(U2/chicken_len)
@@ -134,7 +137,7 @@ mean_waku_jk = mean(waku_jk)
 mean_mogu_jk = mean(mogu_jk)
 ro2_waku_jk = sum((waku_jk - mean_waku_jk)^2)/length(waku_jk)  # 標本分散を求めたかった
 ro2_mogu_jk = sum((mogu_jk - mean_mogu_jk)^2)/length(mogu_jk)  # 標本分散を求めたかった
-#var_waku_jk = var(waku_jk)  # 不変分散
+#var_waku_jk = var(waku_jk)  # 不偏分散
 #var_mogu_jk = var(mogu_jk)
 
 sum2_waku_jk = ro2_waku_jk * length(waku_jk)  # 平均からの偏差の平方和
