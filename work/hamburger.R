@@ -246,6 +246,9 @@ mean_paku = mean(pakupaku)
 se_waku = sum((wakuwaku - mean_waku)^2)
 se_mogu = sum((mogumogu - mean_mogu)^2)
 se_paku = sum((pakupaku - mean_paku)^2)
+# 郡内の平方和
+se_waku + se_mogu + se_paku
+
 # 分散(群内)
 ro2_waku = se_waku / length(wakuwaku)
 ro2_mogu = se_mogu / length(mogumogu)
@@ -272,6 +275,7 @@ ro2_all = ro2_wa_mo_pa * length(wa_mo_pa)
 wa = sum(mean_waku - mean_wa_mo_pa)^2 * length(wakuwaku)
 mo = sum(mean_mogu - mean_wa_mo_pa)^2 * length(mogumogu)
 pa = sum(mean_paku - mean_wa_mo_pa)^2 * length(pakupaku)
+sprintf("%s %s %s", wa, mo, pa)
 
 se_waku + se_mogu + se_paku + wa + mo + pa #-> 2494.183  分散(群間)に等しい
 
@@ -300,6 +304,15 @@ crispy_spycy    = c(65, 85, 75, 85, 75, 80, 90, 75, 85, 65, 75, 85, 80, 85, 90)
 crispy_regular  = c(65, 70, 80, 75, 70, 60, 65, 70, 85, 60, 65, 75, 70, 80, 75)
 regular_spycy   = c(70, 65, 85, 80, 75, 65, 75, 60, 85, 65, 75, 70, 65, 80, 75)
 regular_regular = c(70, 70, 85, 80, 65, 75, 65, 85, 80, 60, 70, 75, 70, 80, 85)
+
+# (確認)aovで分散分析表
+taste_data = data.frame(A=factor(c(rep("crispy_spycy", 15),
+                                    rep("crispy_regular", 15),
+                                    rep("regular_spycy", 15),
+                                    rep("regular_regular", 15)
+                                    )), X=c(crispy_spycy, crispy_regular, regular_spycy, regular_regular))
+boxplot(X~A, data=taste_data, col="lightblue")
+summary(aov(X~A, data=taste_data))
 
 # 平均
 mean_crispy_spycy    = mean(crispy_spycy)
@@ -373,3 +386,15 @@ summary(aov(y~ A+No, bunsan2))
 # Pr(.F)の値がは順分小さい -> よって因子Aの水準・群の平均値は有意水準0.05で差があると言える
 # 「No」の行が各お店間に関する分散分析の統計検定量
 # Aほどではないが0.0031となり、有意水準0.05で差があると言える
+
+# 問題
+data1 = c(6,	5,	7,	6,	8,	4,	6,	5,	8,	4,	5,	6,	5,	4,	5, NA)
+data2 = c(5,	6,	9,	7,	7,	6,	8,	5,	6,	9,	5,	4,	7,	6, NA, NA)
+data3 = c(6,	8,	9,	6,	8,	6,	9,	7,	6,	5,	9,	6,	10,	8,	9,	6)
+
+bunsan3 = data.frame(A=factor(c(rep("data1",16), rep("data2",16), rep("data3",16))),
+                     No=factor(rep(1:16, 3)),
+                     y=c(data1, data2, data3))
+boxplot(y~A, data=bunsan3, col="lightblue")
+summary(aov(y~ A+No, bunsan3))
+
