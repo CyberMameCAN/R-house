@@ -52,3 +52,13 @@ names(res_t)
 res_t$statistic  # t値
 res_t$parameter  # 自由度
 res_t$p.value    # p値
+
+
+# 対応ある2標本
+before <- c(591, 615, 602, 618, 596)
+after  <- c(585, 590, 583, 594, 589)
+
+t.test(before, after, paired = TRUE)
+
+diff <- after - before
+t.test(diff, rep(0, 5), var.equal = FALSE)
