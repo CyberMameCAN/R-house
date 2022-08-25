@@ -55,7 +55,7 @@ summary(nlm2)
 
 plot(x, y)
 lines(x, fitted(nlm1), lty=1, col="#ff0000")
-lines(x, fitted(nlm2), lty=1, col="#000cc")
+lines(x, fitted(nlm2), lty=1, col="#0000cc")
 
 
 #
@@ -78,3 +78,4 @@ lm = lm(airq$Solar.R ~ airq$Ozone)
 summary(lm)
 plot(airq$Ozone, airq$Solar.R)
 abline(lm, lwd=2)
+

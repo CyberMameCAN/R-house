@@ -38,7 +38,7 @@ t.alpha.2.p <- qt(1 - alpha / 2, df = na + nb - 2)
 
 # ウェルチの検定(異分散)
 res_t = t.test(a, b, var.equal = FALSE)
-
+res_t
 
 # tの求め方(計算)
 # 対応のない2群、母分散未知・小標本・等分散
@@ -55,10 +55,42 @@ res_t$p.value    # p値
 
 
 # 対応ある2標本
+# H0: 前後の平均が等しい
+# H1: 前後の平均が等しくない
+
 before <- c(591, 615, 602, 618, 596)
 after  <- c(585, 590, 583, 594, 589)
 
-t.test(before, after, paired = TRUE)
+t.test(before, after, paired = TRUE) 
 
-diff <- after - before
+# 手計算
+diff <- before - after
+
+mu_a <- mean(diff)
+T <- mu_a / (sqrt(var(diff)/length(diff)))
+T
+t4_0025 <- 2.776  # 自由度4の5%有意水準、t分布・両側
+mu_a - t4_0025 * sqrt(var(diff)/length(diff))
+mu_a + t4_0025 * sqrt(var(diff)/length(diff))
+
+# よって帰無仮設は棄却される（平均が等しいとは言えない）
+
+
 t.test(diff, rep(0, 5), var.equal = FALSE)
+
+
+x <- c(19.1, 20.8, 21.4, 17.8, 21.0, 20.4, 17.6, 19.7, 18.6)
+y <- c(21.4, 20.7, 19.4, 23.1, 21.5, 21.0, 22.9, 19.9, 21.3, 18.8)
+t.test(y, x, var.equal = FALSE)
+
+d1 <- c(77, 45, 54, 53, 43)
+d2 <- c(38, 49, 22, 42, 65, 34)
+# H_0: sigma_1 == sigma_2, H_1: sigma_1 > sigma_2
+sprintf("[mean] d1= %.1f, d2= %.1f", mean(d1), mean(d2))
+sprintf("[var]  d1= %.3f, d2= %.3f", var(d1), var(d2))
+#t.test(d1, d2, conf.level=0.95, var.equal = TRUE, alternative="greater")
+t.test(d1, d2, conf.level=0.95, var.equal = TRUE)
+
+prop.test(470, 1000, p=0.45, alternative ="two.side")
+
+prop.test(1000, 5000, p=540/3000)
