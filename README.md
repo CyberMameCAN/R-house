@@ -19,3 +19,20 @@
 ### ブラウザでR Studio
 
     http://localhost:8787
+
+## トラブルシュート
+
+### semPlot
+
+    > library(semPlot)
+    Error: package or namespace load failed for ‘semPlot’ in dyn.load(file, DLLpath = DLLpath, ...):
+    unable to load shared object '/usr/local/lib/R/site-library/igraph/libs/igraph.so':
+    libglpk.so.40: cannot open shared object file: No such file or directory
+
+Docker Imageを作り直すのが面倒だったので、とりあえずサーバに入って足りないパッケージをインストールした。
+
+    $ docker container exec -it r_rstudio_1 bash
+
+    # sudo apt update
+    # apt install -y libglpk-dev
+    
