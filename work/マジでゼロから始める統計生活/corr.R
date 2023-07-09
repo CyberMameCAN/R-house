@@ -70,3 +70,4 @@ head(dat)
 
 round(apply(dat[, c(2:4, 6:8)], 2, mean), 2)
 round(apply(dat[, c(2:4, 6:8)], 2, sd), 2)
+
