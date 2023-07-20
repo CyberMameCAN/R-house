@@ -108,3 +108,4 @@ starwars %>%
                          "masculine" = 1,
                          "feminine" = 2)) %>%   # ダミー変数化？
   View()
+

@@ -63,6 +63,7 @@ lines(x, fitted(nlm2), lty=1, col="#0000cc")
 datasets::airquality
 str(airquality)
 # 欠損値の削除
+table(is.na(airmiles))
 airq = na.omit(airquality)
 round(cor(airq), 3)  # 小数第3位
 # まずはグラフ

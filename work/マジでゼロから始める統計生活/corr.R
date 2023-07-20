@@ -14,6 +14,7 @@ ID <- 1:100
 dat <- data.frame(ID=ID, 項目1=項目1, 項目2=項目2, 項目3=項目3, 性別=NA)
 dat[1:50, 5] <- 1
 dat[51:100, 5] <- 2
+dat
 
 # データの確認
 head(dat)
@@ -27,14 +28,13 @@ cor(dat$項目1, dat$項目2)
 cor.test(dat$項目1, dat$項目2) # method="pearson" ピアソンの積率相関係数の無相関検定を行う
 cor.test(dat$項目1, dat$項目2, method="kendall") # ケンドールの順位相関係数の無相関検定を行う
 cor.test(dat$項目1, dat$項目2, method="spearman") # スピアマンの順位相関係数の無相関検定を行う
-# 相関行列を算出する
-colnames(dat)
 
+# 相関行列を算出する
 cor(dat[, 2:4])
+
 #install.packages("psych")
 library(psych)
 corr.test(dat[, 2:4])
-
 
 # 2変数の関連
 cor(dat$項目1, dat$項目2)

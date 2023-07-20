@@ -11,12 +11,23 @@ library(ggsci)
 library(reshape2)
 library(dplyr)
 
-race_data <- read_csv("project/Keiba/lap-time.csv")
-View(race_data)
+# race_data <- read_csv("project/Keiba/lap-time.csv")
+race_data <- read_csv("project/Keiba/takaraduka-lap-time.csv")
+#View(race_data)
+glimpse(race_data)
+
+get_max_halon_number <- function(race_data, col_number=19) {
+  # 数値のみ抜き出す
+  # Ex) "last10F" >>> 10へ変換する 
+  tmp_ <- colnames(race_data)[col_number]
+  tmp_ <- gsub("last", "", tmp_)
+  tmp_ <- gsub("F", "", tmp_)
+  return(as.numeric(tmp_))
+}
 
 columns <- c("馬名")
-num <- 17
-for(i in seq(num, 1)){
+num <- get_max_halon_number(race_data)
+for(i in seq(num, 1)) {
   #zを作って、それぞれのx1の集計を入れる
   #assign(paste("last", i, "F", sep=""), i*i)
   columns <- append(columns, paste("last", i, "F", sep=""))
@@ -24,15 +35,14 @@ for(i in seq(num, 1)){
 }
 
 preprocessing = function(horse_name) {
-  # horse_name <- "イクイノックス"
   a_horse <- filter(race_data, 馬名==horse_name)[columns]
   # columns[2:length(columns)]
   # a_horse <- race_data[1:3, columns]
-  a_horse
-  df <- melt(t(a_horse[, 2:length(a_horse)]))
-  df$halon_name = rep(17:1, 3)
   
-  halon <- 17:1
+  df <- melt(t(a_horse[, 2:length(a_horse)]))
+  df$halon_name = rep(num:1, 3)
+  
+  halon <- num:1
   # df <- data.frame(
   #   halon_name=halon,
   #   # one_halon_time=t(a_horse[2, 2:length(a_horse)])
@@ -55,7 +65,7 @@ figout = function(df, pic_save=FALSE) {
   g <- ggplot(data=df, mapping=aes(x=halon_name, y=value, group=Var2, color=Var2))
   # g <- g + xlim(17, 1)
   # g <- g + scale_x_continuous()
-  g <- g + scale_x_reverse(breaks=rep(1:17, 1))
+  g <- g + scale_x_reverse(breaks=rep(1:num, 1))
   g <- g + ylim(13.5, 10.0)
   # g <- g + scale_y_reverse()
   # g <- g + scale_y_continuous(breaks=seq(10.0, 13.5, length=8), limits=c(13.5, 10.0))
@@ -83,7 +93,7 @@ figout = function(df, pic_save=FALSE) {
   g <- g + theme_grey()
   plot(g)
   if(pic_save == TRUE) {
-    ggsave(paste("project/out/", horse_name, "-ラップタイム.png", sep=""), dpi = 216)
+    ggsave(paste("project/out/", "LT", horse_name, ".png", sep=""), dpi = 216)
   }
 }
 
@@ -94,7 +104,10 @@ for(horse_name in c(unique(race_data$馬名))) {
   figout(df_laptime, pic_save = TRUE)
 }
 
-
+z1 <- scale(race_data$last1F)  # 正規化
+z1
+mean(z1)
+sd(z1)
 
 # mutate() データセットに新たに変数を追加する関数
 race_data %>% 
@@ -119,12 +132,12 @@ rep(17:1, 3)
 lap_time <- race_data[columns]
 lap_time
 
-nrow(lap_time)
-class(lap_time)
-sapply(lap_time[columns], class)
+nrow(race_data)
+class(race_data)
+sapply(race_data[columns], class)
 
 h <- seq(18, 3)
-lap <- lap_time[1, h]
+lap <- race_data[1, h]
 lap
 y <- as.vector(lap[16:1])
 y
@@ -168,11 +181,16 @@ x <- matrix(c(120, 118, 123, 120, 121, 119, 118, 121, 120, 120,
               121, 130, 141, 148, 157, 168, 177, 189, 201, 210,
               119, 120, 120, 123, 125, 127, 141, 163, 180, 224,
               120, 128, 137, 144, 153, 163, 171, 179, 187, 199), ncol = 5)
+x
 rownames(x) <- 1:10
+x
 colnames(x) <- c("A", "B", "C", "D", "E")
+x
 y <- melt(x)
+y
 class(y)
 colnames(y) <- c("day", "treat", "weight")
+y
 
 g <- ggplot(y, aes(x = day, y = weight, color = treat))
 g <- g + geom_line()
@@ -185,7 +203,7 @@ df_ <- data.frame(
   value    = c(1.1, 2.3, 2.1, 1.8, 2.2, 1.9)
 )
 df_
-
+as.factor(df_$subgroup)
 
 data <- data.frame(x1 = 1:5,    # Create example data
                   x2 = 6:10,
@@ -198,6 +216,7 @@ for(i in 1:ncol(data1)) {
 }
 
 data1
+ncol(data1)
 
 install.packages("palmerpenguins")
 library('palmerpenguins')
@@ -212,7 +231,7 @@ p <- ggplot(data=penguins) +
   geom_point(mapping=aes(x=flipper_length_mm, y=body_mass_g, color=species)) + 
   labs(title="Palmer Penguins: Body Mass vs. Flipper Length", subtitle="Sample of Three Penguin Species",
        caption="Data collected by Dr. Kristen Gorman")
-p +   annotate("text", x=220, y=3500, label="The Gentoos are the largest", color="purple", fontface="bold", size=4.5, angle=25)
+p +   annotate("text", x=205, y=3600, label="The Gentoos are the largest", color="purple", fontface="bold", size=4.5, angle=25)
 
 ggplot(data = penguins) +
   geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g, color=species))

@@ -1,52 +1,63 @@
-states <- read.csv("~/project/trains_race.csv")
-head(states, 3)
+race_data <- read.csv("~/project/trains_race.csv")
+head(race_data, 3)
 
-states[0:2,]
-states[, 4]
+race_data[1:2,]
+race_data[, 4]
 
-handred <- subset(states, states['adjustment_time']==100)
+handred <- subset(race_data, race_data['adjustment_time']>=100)
 head(handred[, 0:10])
 
-st <- states[, 3:27]
-#row.names(st) <- states[, 2]
-nrow(states)
-ncol(states)
-states$adjustment_time
+stem(race_data$fur_color)
+
+st <- race_data[, 3:27]
+#row.names(st) <- race_data[, 2]
+nrow(race_data)
+ncol(race_data)
+race_data$adjustment_time
 # 行名・列名
-colnames(states)
-rownames(states)[1:10]  # あまり使わないか
+colnames(race_data)
+rownames(race_data)[1:10]  # あまり使わないか
 # 型の確認
-class(states$adjustment_time)
+class(race_data$adjustment_time)
 # is.character() -> boolとかある
 # 一度に確認
-sapply(states, class)
+sapply(race_data, class)
 # 型のキャスト
-as.character(states$adjustment_time)
+as.character(race_data$adjustment_time)
 # 欠損値
-notanum <-is.na(states$target_rank)
-notanum[notanum]
+notanum <-is.na(race_data$target_rank)
+notanum
+
 # unique()
-unique(states$target_rank)
+unique(race_data$target_rank)
 # value_counts()みたいな感じ
-table(states$adjustment_time)
+table(race_data$adjustment_time)
 # dropna()
-na.omit(states)
+na.omit(race_data)
 
 # Rのインデックス開始は 「1」スタート
-states[0, ]  # カラム名が返ってきた
-states[1,] # 1行目が返ってきた
+race_data[0, ]  # カラム名が返ってきた
+race_data[1,] # 1行目が返ってきた
 
 Sys.Date()
 Sys.time()
 
-#d <- dist(st)
+# d <- dist(st)
 
-summary(states)
-str(states)
-mean(states$weight_ratio)
+summary(race_data)
+str(race_data)
+mean(race_data$weight_ratio)
 
 c(43, 56, 12 )
-mdy(10211020)
+mdy(10212023)
 
 z <- c(rep(10, 3))  # 10を3個並べる
 z
+
+
+# データの作成
+set.seed(1)
+c1 <- round(rnorm(6, 19.6, sd=sqrt(0.26)), 1)
+var(c1)
+mean(c1)
+t.test(c1, mu=20, alternative = "two.sided", conf.level = 0.95)
