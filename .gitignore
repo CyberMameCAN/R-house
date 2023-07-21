@@ -4,6 +4,7 @@ work/trains_race.csv
 *.png
 *.Rmd
 *.html
+*.xlsx
 
 # stan
 work/*.rds
